@@ -1,0 +1,77 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rgi-monitor"
+version = "1.0.0"
+description = "RGI Universal AI Monitoring Suite — one equation, seven probes, every dimension of AI behaviour"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Denis Q." }]
+keywords = [
+    "ai-safety", "llm", "monitoring", "observability",
+    "consciousness", "hallucination", "drift-detection",
+    "reflective-gain", "rgi", "alignment"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: System :: Monitoring",
+]
+requires-python = ">=3.9"
+dependencies = []   # zero external dependencies — stdlib only
+
+[project.optional-dependencies]
+hf = ["torch>=2.0", "transformers>=4.30"]
+dev = ["pytest>=7.0", "pytest-cov", "black", "ruff", "mypy"]
+docs = ["sphinx", "sphinx-rtd-theme", "myst-parser"]
+
+[project.urls]
+Homepage = "https://github.com/Qavor/rgi-monitor"
+Documentation = "https://github.com/Qavor/rgi-monitor#readme"
+Repository = "https://github.com/Qavor/rgi-monitor"
+Issues = "https://github.com/Qavor/rgi-monitor/issues"
+
+[project.scripts]
+rgi-monitor = "rgi_monitor.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["rgi_monitor*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+
+[tool.black]
+line-length = 100
+target-version = ["py39", "py310", "py311", "py312"]
+
+[tool.ruff]
+line-length = 110
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = [
+    "E711",   # comparison to None — style preference
+    "E501",   # line too long — handled by black
+    "F841",   # local variable assigned but never used — probe internals
+]
+
+[tool.ruff.lint.per-file-ignores]
+"examples/*" = ["E402", "I001"]   # examples do path hacks before imports
+"rgi_monitor/core.py" = ["I001"]  # demo block at bottom uses inline import
+
+[tool.mypy]
+python_version = "3.9"
+strict = false
+ignore_missing_imports = true
